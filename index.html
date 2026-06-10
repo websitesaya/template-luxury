@@ -550,7 +550,7 @@
   </div>
 
   <!-- Floating Nav -->
-  <nav class="floating-nav" id="floating-nav">
+  <nav class="floating-nav" id="floating-nav" style="z-index:500;pointer-events:auto;">
     <a class="nav-btn" onclick="navigateTo('cover')" title="Cover">
       <i class="fas fa-home"></i>
       <span class="nav-tip">Cover</span>
@@ -601,7 +601,7 @@
   <!-- ========== SECTION: COVER ========== -->
   <section id="cover">
     <div class="cover-bg-glow"></div>
-    <div class="cover-stars" id="cover-stars"></div>
+    <div class="cover-stars" id="cover-stars" style="pointer-events:none;"></div>
 
     <!-- Elegant frame -->
     <div class="cover-frame">
@@ -696,7 +696,7 @@
           <div class="couple-photo-wrap">
             <div class="couple-photo-frame-2"></div>
             <div class="couple-photo-frame"></div>
-            <img class="couple-photo" src="Mempelai Pria.jpg" alt="Mempelai Pria" onerror="this.src='https://via.placeholder.com/180x220/1a3a6b/c9a84c?text=Groom'" />
+            <img class="couple-photo" src="Mempelai Pria.jpg" alt="Mempelai Pria" loading="eager" decoding="async" onerror="this.src='https://via.placeholder.com/180x220/1a3a6b/c9a84c?text=Groom'" />
           </div>
           <div class="couple-role">Mempelai Pria</div>
           <div class="couple-name">Ahmad Rijal</div>
@@ -720,7 +720,7 @@
           <div class="couple-photo-wrap">
             <div class="couple-photo-frame-2"></div>
             <div class="couple-photo-frame" style="transform:rotate(-3deg)"></div>
-            <img class="couple-photo" src="Mempelai Wanita.jpg" alt="Mempelai Wanita" onerror="this.src='https://via.placeholder.com/180x220/1a3a6b/c9a84c?text=Bride'" />
+            <img class="couple-photo" src="Mempelai Wanita.jpg" alt="Mempelai Wanita" loading="eager" decoding="async" onerror="this.src='https://via.placeholder.com/180x220/1a3a6b/c9a84c?text=Bride'" />
           </div>
           <div class="couple-role">Mempelai Wanita</div>
           <div class="couple-name">Siti Aminah</div>
@@ -807,7 +807,7 @@
   </section>
 
   <!-- ========== SECTION: EVENTS ========== -->
-  <section id="events">
+  <section id="events" style="position:relative;z-index:1;">
     <div class="section-bg-dots"></div>
 
     <div class="section-inner">
@@ -907,32 +907,32 @@
 
       <div class="gallery-grid reveal reveal-delay-3">
         <!-- 20 gallery items -->
-        <div class="gallery-item"><img src="Foto1.jpg" alt="Foto 1" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto2.jpg" alt="Foto 2" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto3.jpg" alt="Foto 3" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto4.jpg" alt="Foto 4" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto5.jpg" alt="Foto 5" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto6.jpg" alt="Foto 6" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto7.jpg" alt="Foto 7" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto8.jpg" alt="Foto 8" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto9.jpg" alt="Foto 9" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto10.jpg" alt="Foto 10" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto11.jpg" alt="Foto 11" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto12.jpg" alt="Foto 12" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto13.jpg" alt="Foto 13" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto14.jpg" alt="Foto 14" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto15.jpg" alt="Foto 15" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto16.jpg" alt="Foto 16" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto17.jpg" alt="Foto 17" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto18.jpg" alt="Foto 18" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto19.jpg" alt="Foto 19" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
-        <div class="gallery-item"><img src="Foto20.jpg" alt="Foto 20" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto1.jpg" alt="Foto 1" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto2.jpg" alt="Foto 2" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto3.jpg" alt="Foto 3" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto4.jpg" alt="Foto 4" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto5.jpg" alt="Foto 5" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto6.jpg" alt="Foto 6" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto7.jpg" alt="Foto 7" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto8.jpg" alt="Foto 8" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto9.jpg" alt="Foto 9" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto10.jpg" alt="Foto 10" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto11.jpg" alt="Foto 11" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto12.jpg" alt="Foto 12" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto13.jpg" alt="Foto 13" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto14.jpg" alt="Foto 14" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto15.jpg" alt="Foto 15" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto16.jpg" alt="Foto 16" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto17.jpg" alt="Foto 17" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto18.jpg" alt="Foto 18" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto19.jpg" alt="Foto 19" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto20.jpg" alt="Foto 20" loading="lazy" decoding="async" width="200" height="200" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
       </div>
     </div>
   </section>
 
   <!-- ========== SECTION: GIFTS ========== -->
-  <section id="gifts">
+  <section id="gifts" style="position:relative;z-index:1;">
     <div class="section-bg-dots"></div>
     <div class="section-inner">
       <div class="section-badge reveal">
@@ -943,7 +943,7 @@
       <h2 class="section-title reveal reveal-delay-1">Kirim Hadiah</h2>
       <p class="section-subtitle reveal reveal-delay-2">Doa dan kehadiran Anda adalah hadiah terbaik bagi kami. Namun jika ingin memberikan hadiah lainnya, berikut informasi rekening kami.</p>
 
-      <div class="gift-cards-wrap">
+      <div class="gift-cards-wrap" style="position:relative;z-index:2;">
         <!-- Card Pria -->
         <div class="reveal reveal-delay-1">
           <div class="atm-card">
@@ -1029,7 +1029,7 @@
 
   <!-- ========== SECTION: CLOSING ========== -->
   <section id="closing">
-    <div class="cover-stars" id="closing-stars"></div>
+    <div class="cover-stars" id="closing-stars" style="pointer-events:none;"></div>
     <div class="section-inner closing-content">
 
       <div class="ring-animation reveal">
