@@ -3,267 +3,267 @@
    Design by Zhald_Design
    ============================================ */
 
+// ============ CONFIG ============
 const CONFIG = {
   JSONBIN_BIN_ID: 'YOUR_BIN_ID_HERE',
   JSONBIN_ACCESS_KEY: 'YOUR_X-ACCESS-KEY_HERE',
   JSONBIN_API: 'https://api.jsonbin.io/v3/b'
 };
 
-/* ── DOM READY ── */
+// ============ DOM READY ============
 document.addEventListener('DOMContentLoaded', () => {
   initParticles();
   initStars();
   initPetals();
   checkGuestName();
   initMusicPlayer();
+  initScrollReveal();
   initGallery();
   initWishes();
   initCopyButtons();
   generateSideOrnaments();
 });
 
-/* ── OPENING ── */
+// ============ OPENING SCREEN ============
 function openInvitation() {
   const openingScreen = document.getElementById('opening-screen');
-  const curtain       = document.getElementById('curtain');
-  const mainInv       = document.getElementById('main-invitation');
-  const guestBanner   = document.querySelector('.guest-banner');
+  const curtain = document.getElementById('curtain');
+  const mainInvitation = document.getElementById('main-invitation');
+  const guestBanner = document.querySelector('.guest-banner');
 
-  openingScreen.style.transition = 'opacity 0.7s ease';
-  openingScreen.style.opacity    = '0';
+  // Fade out opening screen
+  openingScreen.style.transition = 'opacity 0.8s ease';
+  openingScreen.style.opacity = '0';
 
   setTimeout(() => {
     openingScreen.style.display = 'none';
-    mainInv.classList.add('visible');
-
+    mainInvitation.classList.add('visible');
     curtain.style.display = 'flex';
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        curtain.classList.add('curtain-open');
-      });
-    });
 
+    // Trigger curtain open
     setTimeout(() => {
-      curtain.style.transition = 'opacity 0.5s ease';
-      curtain.style.opacity    = '0';
-      setTimeout(() => { curtain.style.display = 'none'; }, 500);
-    }, 1800);
+      curtain.classList.add('curtain-open');
+    }, 100);
 
+    // Hide curtain after animation
+    setTimeout(() => {
+      curtain.style.opacity = '0';
+      curtain.style.transition = 'opacity 0.5s ease';
+      setTimeout(() => {
+        curtain.style.display = 'none';
+      }, 500);
+    }, 2000);
+
+    // Show guest banner
     if (guestBanner) {
-      setTimeout(() => guestBanner.classList.add('show'), 2200);
+      setTimeout(() => {
+        guestBanner.classList.add('show');
+      }, 2500);
     }
 
-    /* auto play music */
+    // Auto play music
     setTimeout(() => {
       const audio = document.getElementById('bg-music');
       if (audio) {
         audio.play().catch(() => {});
         document.querySelector('.music-bars')?.classList.remove('paused');
-        const icon = document.getElementById('music-icon');
-        if (icon) icon.textContent = '♪';
+        document.getElementById('music-icon').textContent = '♪';
       }
-    }, 2300);
+    }, 2600);
 
-    /* init scroll reveal setelah masuk */
-    setTimeout(() => initScrollReveal(), 2000);
+    // Trigger reveal for first section
+    setTimeout(() => {
+      triggerReveal();
+    }, 2200);
 
-  }, 700);
+  }, 800);
 }
 
-/* ── GUEST NAME ── */
+// ============ GUEST NAME ============
 function checkGuestName() {
-  const params    = new URLSearchParams(window.location.search);
-  const guestName = params.get('to') || params.get('nama');
+  const urlParams = new URLSearchParams(window.location.search);
+  const guestName = urlParams.get('to') || urlParams.get('nama');
+
   if (guestName) {
     const decoded = decodeURIComponent(guestName);
-    const el = document.querySelector('.guest-name-display');
-    if (el) el.textContent = decoded;
+    const banner = document.querySelector('.guest-banner');
+    const nameEl = document.querySelector('.guest-name-display');
+    if (banner && nameEl) {
+      nameEl.textContent = decoded;
+    }
   }
 }
 
-/* ── PARTICLES ── */
+// ============ PARTICLES ============
 function initParticles() {
   const container = document.querySelector('.opening-particles');
   if (!container) return;
-  const colors = ['#c9963a','#e2b85a','#e8bfc8','#ffffff'];
-  for (let i = 0; i < 28; i++) {
+
+  const colors = ['#c9a84c', '#e8c97a', '#a8c4e8', '#ffffff'];
+  for (let i = 0; i < 30; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
-    p.style.cssText = `
-      left:${Math.random()*100}%;
-      width:${Math.random()*4+2}px;
-      height:${Math.random()*4+2}px;
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      animation-duration:${Math.random()*8+6}s;
-      animation-delay:${Math.random()*8}s;
-      border-radius:${Math.random()>.5?'50%':'0'};
-    `;
+    p.style.left = Math.random() * 100 + '%';
+    p.style.width = p.style.height = (Math.random() * 4 + 2) + 'px';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDuration = (Math.random() * 8 + 6) + 's';
+    p.style.animationDelay = (Math.random() * 8) + 's';
+    p.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
     container.appendChild(p);
   }
 }
 
-/* ── STARS ── */
+// ============ STARS ============
 function initStars() {
-  ['cover-stars','closing-stars'].forEach(id => {
-    const c = document.getElementById(id);
-    if (!c) return;
-    for (let i = 0; i < 70; i++) {
-      const s = document.createElement('div');
-      const sz = Math.random()*2.5+1;
-      s.className = 'star';
-      s.style.cssText = `
-        left:${Math.random()*100}%;
-        top:${Math.random()*100}%;
-        width:${sz}px;height:${sz}px;
-        animation-duration:${Math.random()*4+2}s;
-        animation-delay:${Math.random()*4}s;
-      `;
-      c.appendChild(s);
-    }
-  });
+  const container = document.querySelector('.cover-stars');
+  if (!container) return;
+
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDuration = (Math.random() * 4 + 2) + 's';
+    s.style.animationDelay = (Math.random() * 4) + 's';
+    const size = Math.random() * 3 + 1;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    container.appendChild(s);
+  }
 }
 
-/* ── PETALS ── */
+// ============ PETALS ============
 function initPetals() {
   const container = document.querySelector('.petal-layer');
   if (!container) return;
-  const symbols = ['✦','✧','❋','◆','◇','❖'];
-  for (let i = 0; i < 18; i++) {
+
+  const symbols = ['✦', '✧', '❋', '✿', '◆', '◇', '❖'];
+  for (let i = 0; i < 20; i++) {
     const p = document.createElement('div');
     p.className = 'petal';
-    p.textContent = symbols[Math.floor(Math.random()*symbols.length)];
-    p.style.cssText = `
-      left:${Math.random()*100}%;
-      color:${Math.random()>.5?'#c9963a':'#e8bfc8'};
-      font-size:${Math.random()*10+7}px;
-      animation-duration:${Math.random()*12+10}s;
-      animation-delay:${Math.random()*15}s;
-    `;
+    p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.color = Math.random() > 0.5 ? '#c9a84c' : '#a8c4e8';
+    p.style.fontSize = (Math.random() * 10 + 8) + 'px';
+    p.style.animationDuration = (Math.random() * 12 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 15) + 's';
+    p.style.opacity = 0;
     container.appendChild(p);
   }
 }
 
-/* ── SIDE ORNAMENTS ── */
+// ============ SIDE ORNAMENTS ============
 function generateSideOrnaments() {
   const border = document.querySelector('.page-border-wrapper');
   if (!border) return;
-  const syms = ['✦','◆','❖','✧','◇'];
-  [22,38,54,70,86].forEach((pct, i) => {
-    ['left','right'].forEach(side => {
+
+  const ornaments = ['✦', '◆', '❖', '✧', '◇'];
+  const positions = [20, 35, 50, 65, 80];
+
+  positions.forEach((pos, i) => {
+    ['left', 'right'].forEach(side => {
       const el = document.createElement('div');
-      el.className = `side-gem ${side}`;
-      el.textContent = syms[i % syms.length];
-      el.style.top   = pct + '%';
-      el.style.animationDelay = (i * 0.4) + 's';
+      el.className = `side-ornament ${side}`;
+      el.textContent = ornaments[i % ornaments.length];
+      el.style.top = pos + '%';
+      el.style.animationDelay = (i * 0.5) + 's';
       border.appendChild(el);
     });
   });
 }
 
-/* ── MUSIC PLAYER ── */
+// ============ MUSIC PLAYER ============
 function initMusicPlayer() {
-  const audio     = document.getElementById('bg-music');
+  const audio = document.getElementById('bg-music');
   const toggleBtn = document.getElementById('music-toggle');
-  const icon      = document.getElementById('music-icon');
-  const bars      = document.querySelector('.music-bars');
+  const icon = document.getElementById('music-icon');
+  const bars = document.querySelector('.music-bars');
+
   if (!toggleBtn || !audio) return;
 
-  let playing = false;
+  let isPlaying = false;
 
   toggleBtn.addEventListener('click', () => {
-    if (playing) {
+    if (isPlaying) {
       audio.pause();
-      if (icon)  icon.textContent = '♫';
+      icon.textContent = '♫';
       bars?.classList.add('paused');
     } else {
       audio.play().catch(() => {});
-      if (icon)  icon.textContent = '♪';
+      icon.textContent = '♪';
       bars?.classList.remove('paused');
     }
-    playing = !playing;
+    isPlaying = !isPlaying;
   });
 
   audio.addEventListener('ended', () => {
     audio.currentTime = 0;
-    audio.play().catch(() => {});
+    audio.play();
   });
 }
 
-/* ── SCROLL REVEAL ── */
+// ============ SCROLL REVEAL ============
 function initScrollReveal() {
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target); /* stop watching once revealed */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
       }
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  }, { threshold: 0.1 });
 
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-/* ── NAVIGATE ── */
-function navigateTo(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const top = el.getBoundingClientRect().top + window.pageYOffset - 16;
-  window.scrollTo({ top, behavior: 'smooth' });
+function triggerReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.05 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-/* ── GALLERY ── */
-let currentIdx = 0;
-const TOTAL    = 20;
+// ============ NAVIGATE TO SECTION ============
+function navigateTo(sectionId) {
+  const target = document.getElementById(sectionId);
+  if (target) {
+    const offset = 20;
+    const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+}
+
+// ============ GALLERY ============
+let currentLightboxIndex = 0;
+const totalPhotos = 20;
 
 function initGallery() {
-  /* Use event delegation — satu listener di parent, tidak per-item */
-  const grid = document.querySelector('.gallery-grid');
-  if (!grid) return;
-
-  grid.addEventListener('click', (e) => {
-    const item = e.target.closest('.gallery-item');
-    if (!item) return;
-    const items = [...grid.querySelectorAll('.gallery-item')];
-    currentIdx = items.indexOf(item);
-    openLightbox(currentIdx);
+  const items = document.querySelectorAll('.gallery-item');
+  items.forEach((item, index) => {
+    item.addEventListener('click', () => openLightbox(index));
   });
 
-  /* Keyboard nav */
   document.addEventListener('keydown', (e) => {
     const lb = document.getElementById('lightbox');
-    if (!lb?.classList.contains('open')) return;
+    if (!lb || !lb.classList.contains('open')) return;
     if (e.key === 'ArrowRight') nextPhoto();
-    if (e.key === 'ArrowLeft')  prevPhoto();
-    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft') prevPhoto();
+    if (e.key === 'Escape') closeLightbox();
   });
-
-  /* Preload gallery images only when section is visible */
-  const gallerySection = document.getElementById('gallery');
-  if (gallerySection) {
-    const sectionObserver = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        preloadGalleryImages();
-        sectionObserver.disconnect();
-      }
-    }, { threshold: 0.1 });
-    sectionObserver.observe(gallerySection);
-  }
 }
 
-/* Preload semua foto gallery saat section mulai terlihat */
-function preloadGalleryImages() {
-  for (let i = 1; i <= TOTAL; i++) {
-    const img = new Image();
-    img.src = `Foto${i}.jpg`;
-  }
-}
-
-function openLightbox(idx) {
-  currentIdx = idx;
-  const lb  = document.getElementById('lightbox');
+function openLightbox(index) {
+  currentLightboxIndex = index;
+  const lb = document.getElementById('lightbox');
   const img = document.getElementById('lightbox-img');
   if (!lb || !img) return;
-  img.src = `Foto${idx + 1}.jpg`;
+
+  img.src = `Foto${index + 1}.jpg`;
+  img.alt = `Foto Prewedding ${index + 1}`;
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -275,82 +275,69 @@ function closeLightbox() {
 }
 
 function nextPhoto() {
-  currentIdx = (currentIdx + 1) % TOTAL;
+  currentLightboxIndex = (currentLightboxIndex + 1) % totalPhotos;
   const img = document.getElementById('lightbox-img');
-  if (!img) return;
-  img.style.opacity = '0';
-  setTimeout(() => {
-    img.src = `Foto${currentIdx + 1}.jpg`;
-    img.style.opacity = '1';
-  }, 180);
+  if (img) {
+    img.style.opacity = '0';
+    setTimeout(() => {
+      img.src = `Foto${currentLightboxIndex + 1}.jpg`;
+      img.style.opacity = '1';
+    }, 200);
+  }
 }
 
 function prevPhoto() {
-  currentIdx = (currentIdx - 1 + TOTAL) % TOTAL;
+  currentLightboxIndex = (currentLightboxIndex - 1 + totalPhotos) % totalPhotos;
   const img = document.getElementById('lightbox-img');
-  if (!img) return;
-  img.style.opacity = '0';
-  setTimeout(() => {
-    img.src = `Foto${currentIdx + 1}.jpg`;
-    img.style.opacity = '1';
-  }, 180);
+  if (img) {
+    img.style.opacity = '0';
+    setTimeout(() => {
+      img.src = `Foto${currentLightboxIndex + 1}.jpg`;
+      img.style.opacity = '1';
+    }, 200);
+  }
 }
 
-/* ── COPY BUTTONS (no jQuery, pure delegation) ── */
+// ============ COPY BUTTONS ============
 function initCopyButtons() {
-  /* Event delegation di document level — tidak peduli z-index */
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.copy-btn');
-    if (!btn) return;
-    e.stopPropagation();
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const textToCopy = btn.getAttribute('data-copy');
+      if (!textToCopy) return;
 
-    const text = btn.getAttribute('data-copy');
-    if (!text) return;
-
-    const doкопy = () => {
-      showToast('Nomor rekening berhasil disalin ✦');
-      const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
-      setTimeout(() => { btn.innerHTML = orig; }, 2000);
-    };
-
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(text).then(doкопy).catch(() => fallbackCopy(text, doкопy));
-    } else {
-      fallbackCopy(text, doкопy);
-    }
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        showToast('Nomor rekening berhasil disalin ✦');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✓ Tersalin';
+        setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = textToCopy;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('Nomor rekening berhasil disalin ✦');
+      });
+    });
   });
 }
 
-function fallbackCopy(text, cb) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;top:-9999px;opacity:0';
-  document.body.appendChild(ta);
-  ta.focus(); ta.select();
-  try { document.execCommand('copy'); cb(); } catch(e) {}
-  document.body.removeChild(ta);
-}
-
-// Fix typo alias
-const doкопy = () => {};
-
-/* ── TOAST ── */
-function showToast(msg) {
-  let t = document.getElementById('global-toast');
-  if (!t) {
-    t = document.createElement('div');
-    t.id = 'global-toast';
-    t.className = 'toast';
-    document.body.appendChild(t);
+// ============ TOAST ============
+function showToast(message) {
+  let toast = document.querySelector('.toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'toast';
+    document.body.appendChild(toast);
   }
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-/* ── WISHES ── */
+// ============ WISHES (JSONBin) ============
 async function initWishes() {
   await loadWishes();
 }
@@ -358,20 +345,25 @@ async function initWishes() {
 async function loadWishes() {
   const container = document.getElementById('wishes-list');
   if (!container) return;
+
   container.innerHTML = '<div class="loading-spinner">Memuat ucapan</div>';
 
   try {
-    const res = await fetch(
-      `${CONFIG.JSONBIN_API}/${CONFIG.JSONBIN_BIN_ID}/latest`,
-      { headers: { 'X-Access-Key': CONFIG.JSONBIN_ACCESS_KEY } }
-    );
-    if (!res.ok) throw new Error('Failed');
+    const res = await fetch(`${CONFIG.JSONBIN_API}/${CONFIG.JSONBIN_BIN_ID}/latest`, {
+      headers: {
+        'X-Access-Key': CONFIG.JSONBIN_ACCESS_KEY
+      }
+    });
+
+    if (!res.ok) throw new Error('Failed to load');
+
     const data = await res.json();
-    renderWishes(data.record?.wishes || [], container);
-  } catch {
+    const wishes = data.record?.wishes || [];
+
+    renderWishes(wishes, container);
+  } catch (err) {
     container.innerHTML = `
-      <div style="text-align:center;padding:20px;color:rgba(255,255,255,.4);
-        font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;">
+      <div style="text-align:center; padding:20px; color: rgba(255,255,255,0.4); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px;">
         Jadilah yang pertama memberikan ucapan ✦
       </div>`;
   }
@@ -380,104 +372,150 @@ async function loadWishes() {
 function renderWishes(wishes, container) {
   if (!wishes.length) {
     container.innerHTML = `
-      <div style="text-align:center;padding:20px;color:rgba(255,255,255,.4);
-        font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;">
+      <div style="text-align:center; padding:20px; color: rgba(255,255,255,0.4); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px;">
         Jadilah yang pertama memberikan ucapan ✦
       </div>`;
     return;
   }
+
   container.innerHTML = '';
-  const labels = { hadir:'✓ Hadir', tidak:'✗ Tidak Hadir', mungkin:'◎ Mungkin Hadir' };
-  [...wishes].reverse().forEach(w => {
+  const sorted = [...wishes].reverse();
+  sorted.forEach(w => {
     const card = document.createElement('div');
     card.className = 'wish-card';
+    const attendanceLabel = {
+      'hadir': '✓ Hadir',
+      'tidak': '✗ Tidak Hadir',
+      'mungkin': '◎ Mungkin Hadir'
+    }[w.attendance] || '';
+
     card.innerHTML = `
       <div class="wish-name">${escapeHtml(w.name)}</div>
-      <div class="wish-attendance">${labels[w.attendance] || ''}</div>
+      <div class="wish-attendance">${attendanceLabel}</div>
       <div class="wish-message">${escapeHtml(w.message)}</div>
-      <div class="wish-time">${formatDate(w.time)}</div>`;
+      <div class="wish-time">${formatDate(w.time)}</div>
+    `;
     container.appendChild(card);
   });
 }
 
 async function submitWish() {
-  const nameEl  = document.getElementById('wish-name');
-  const msgEl   = document.getElementById('wish-message');
-  const attEl   = document.getElementById('wish-attendance');
-  const btn     = document.getElementById('wish-submit');
-  const name    = nameEl?.value?.trim();
-  const message = msgEl?.value?.trim();
+  const name = document.getElementById('wish-name')?.value?.trim();
+  const message = document.getElementById('wish-message')?.value?.trim();
+  const attendance = document.getElementById('wish-attendance')?.value;
 
-  if (!name || !message) { showToast('Mohon isi nama dan ucapan ✦'); return; }
+  if (!name || !message) {
+    showToast('Mohon isi nama dan ucapan ✦');
+    return;
+  }
 
-  if (btn) { btn.disabled = true; btn.textContent = 'Mengirim...'; }
+  const btn = document.getElementById('wish-submit');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Mengirim...';
+  }
 
   try {
-    const getRes = await fetch(
-      `${CONFIG.JSONBIN_API}/${CONFIG.JSONBIN_BIN_ID}/latest`,
-      { headers: { 'X-Access-Key': CONFIG.JSONBIN_ACCESS_KEY } }
-    );
+    // Get current data
+    const getRes = await fetch(`${CONFIG.JSONBIN_API}/${CONFIG.JSONBIN_BIN_ID}/latest`, {
+      headers: { 'X-Access-Key': CONFIG.JSONBIN_ACCESS_KEY }
+    });
+
     let wishes = [];
-    if (getRes.ok) { const d = await getRes.json(); wishes = d.record?.wishes || []; }
+    if (getRes.ok) {
+      const data = await getRes.json();
+      wishes = data.record?.wishes || [];
+    }
 
-    wishes.push({ name, message, attendance: attEl?.value || 'hadir', time: new Date().toISOString() });
+    // Add new wish
+    wishes.push({
+      name,
+      message,
+      attendance,
+      time: new Date().toISOString()
+    });
 
+    // Update bin
     const putRes = await fetch(`${CONFIG.JSONBIN_API}/${CONFIG.JSONBIN_BIN_ID}`, {
       method: 'PUT',
-      headers: { 'Content-Type':'application/json', 'X-Access-Key': CONFIG.JSONBIN_ACCESS_KEY },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Key': CONFIG.JSONBIN_ACCESS_KEY
+      },
       body: JSON.stringify({ wishes })
     });
-    if (!putRes.ok) throw new Error('Save failed');
 
-    if (nameEl)  nameEl.value  = '';
-    if (msgEl)   msgEl.value   = '';
-    if (attEl)   attEl.value   = 'hadir';
+    if (!putRes.ok) throw new Error('Failed to save');
+
+    // Clear form
+    document.getElementById('wish-name').value = '';
+    document.getElementById('wish-message').value = '';
+    document.getElementById('wish-attendance').value = 'hadir';
+
     showToast('Ucapan berhasil dikirim ✦');
+
+    // Reload
     await loadWishes();
-  } catch {
-    showToast('Gagal mengirim. Coba lagi.');
+
+  } catch (err) {
+    showToast('Gagal mengirim ucapan. Coba lagi.');
   } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'KIRIM UCAPAN'; }
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'KIRIM UCAPAN';
+    }
   }
 }
 
-/* ── HELPERS ── */
-function escapeHtml(s) {
-  const d = document.createElement('div');
-  d.appendChild(document.createTextNode(s));
-  return d.innerHTML;
+// ============ HELPERS ============
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(text));
+  return div.innerHTML;
 }
 
 function formatDate(iso) {
   try {
-    return new Date(iso).toLocaleDateString('id-ID', {
-      day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'
+    const d = new Date(iso);
+    return d.toLocaleDateString('id-ID', {
+      day: 'numeric', month: 'long', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
     });
-  } catch { return ''; }
+  } catch {
+    return '';
+  }
 }
 
-/* ── COUNTDOWN ── */
-(function initCountdown() {
-  const target = new Date('2025-12-12T08:00:00');
-  const ids    = ['cd-days','cd-hours','cd-mins','cd-secs'];
+// ============ COUNTDOWN ============
+function initCountdown() {
+  const weddingDate = new Date('2025-12-12T08:00:00');
 
-  function tick() {
-    const diff = target - Date.now();
+  function update() {
+    const now = new Date();
+    const diff = weddingDate - now;
+
     if (diff <= 0) {
       document.getElementById('countdown-wrap')?.remove();
       return;
     }
-    const vals = [
-      Math.floor(diff / 86400000),
-      Math.floor(diff / 3600000) % 24,
-      Math.floor(diff / 60000)   % 60,
-      Math.floor(diff / 1000)    % 60
-    ];
-    ids.forEach((id, i) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = String(vals[i]).padStart(2, '0');
-    });
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const el = (id, val) => {
+      const e = document.getElementById(id);
+      if (e) e.textContent = String(val).padStart(2, '0');
+    };
+    el('cd-days', days);
+    el('cd-hours', hours);
+    el('cd-mins', mins);
+    el('cd-secs', secs);
   }
-  tick();
-  setInterval(tick, 1000);
-})();
+
+  update();
+  setInterval(update, 1000);
+}
+
+document.addEventListener('DOMContentLoaded', initCountdown);
