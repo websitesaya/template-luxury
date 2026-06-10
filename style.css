@@ -165,7 +165,7 @@ body{font-family:'Lato',sans-serif;background:var(--maroon-deepest);color:var(--
 #main-invitation.visible{display:block}
 
 /* ── PAGE BORDER (fixed ornamental frame) ── */
-.page-border-wrapper{position:fixed;inset:0;pointer-events:none;z-index:100}
+.page-border-wrapper{position:fixed;inset:0;pointer-events:none!important;z-index:50}.page-border-wrapper *{pointer-events:none!important}
 .b-edge{position:absolute;background:var(--grad-gold)}
 .b-top   {top:0;left:0;right:0;height:3px}
 .b-bottom{bottom:0;left:0;right:0;height:3px}
@@ -195,10 +195,11 @@ body{font-family:'Lato',sans-serif;background:var(--maroon-deepest);color:var(--
 /* ── FLOATING NAV ── */
 .floating-nav{
   position:fixed;right:14px;top:50%;transform:translateY(-50%);
-  z-index:200;display:flex;flex-direction:column;gap:7px;
+  z-index:500;display:flex;flex-direction:column;gap:7px;
 }
 .nav-btn{
   width:42px;height:42px;
+  pointer-events:auto;
   background:rgba(28,3,8,.9);
   border:1px solid rgba(168,114,42,.42);border-radius:50%;
   display:flex;align-items:center;justify-content:center;
@@ -223,7 +224,7 @@ body{font-family:'Lato',sans-serif;background:var(--maroon-deepest);color:var(--
 
 /* ── MUSIC PLAYER ── */
 .music-player{
-  position:fixed;bottom:18px;left:18px;z-index:200;
+  position:fixed;bottom:18px;left:18px;z-index:500;
   display:flex;align-items:center;gap:10px;
   background:rgba(28,3,8,.93);
   border:1px solid rgba(168,114,42,.42);
@@ -441,7 +442,7 @@ section{position:relative;padding:80px 20px;overflow:hidden}
 #gifts{background:linear-gradient(180deg,#1c0308 0%,#240912 100%);text-align:center}
 .gift-cards-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px}
 .atm-card{
-  background:var(--grad-main);border-radius:14px;
+  position:relative;z-index:1;background:var(--grad-main);border-radius:14px;
   padding:22px 22px;position:relative;overflow:hidden;
   box-shadow:0 10px 40px rgba(0,0,0,.5),0 0 0 1px rgba(168,114,42,.24);
   transition:transform .4s,box-shadow .4s;
@@ -457,7 +458,7 @@ section{position:relative;padding:80px 20px;overflow:hidden}
 .card-holder{font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:rgba(255,255,255,.9);text-transform:uppercase}
 .card-holder-label{font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.4);margin-bottom:2px}
 .card-contactless{color:var(--gold);font-size:20px;opacity:.65}
-.copy-btn{display:flex;align-items:center;gap:6px;margin-top:11px;background:rgba(255,255,255,.07);border:1px solid rgba(168,114,42,.3);color:var(--gold-light);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:7px 12px;cursor:pointer;width:100%;justify-content:center;transition:all .3s}
+.copy-btn{display:flex;align-items:center;gap:6px;margin-top:11px;position:relative;z-index:10;pointer-events:auto;background:rgba(255,255,255,.07);border:1px solid rgba(168,114,42,.3);color:var(--gold-light);font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;padding:7px 12px;cursor:pointer;width:100%;justify-content:center;transition:all .3s}
 .copy-btn:hover{background:rgba(168,114,42,.2);border-color:var(--gold)}
 
 /* ── SECTION: WISHES ── */
@@ -511,7 +512,7 @@ footer{background:#0e0105;text-align:center;padding:28px 20px;border-top:1px sol
 @keyframes fuRight{from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:translateX(0)}}
 
 /* ── GUEST BANNER ── */
-.guest-banner{position:fixed;top:0;left:0;right:0;z-index:150;background:rgba(28,3,8,.96);border-bottom:1px solid rgba(168,114,42,.32);padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:8px;backdrop-filter:blur(8px);transform:translateY(-100%);transition:transform .5s}
+.guest-banner{position:fixed;top:0;left:0;right:0;z-index:400;background:rgba(28,3,8,.96);border-bottom:1px solid rgba(168,114,42,.32);padding:8px 20px;display:flex;align-items:center;justify-content:center;gap:8px;backdrop-filter:blur(8px);transform:translateY(-100%);transition:transform .5s}
 .guest-banner.show{transform:translateY(0)}
 .guest-banner span{font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,.62)}
 .guest-banner strong{font-family:'Cinzel',serif;font-size:13px;color:var(--gold-light);letter-spacing:2px}
@@ -549,3 +550,69 @@ footer{background:#0e0105;text-align:center;padding:28px 20px;border-top:1px sol
   .lightbox-next{right:-36px}
   .cover-petal-tl,.cover-petal-tr,.cover-petal-bl,.cover-petal-br{display:none}
 }
+
+
+/* ══════════════════════════════════════
+   POINTER-EVENTS & CLICKABILITY FIXES
+   ══════════════════════════════════════ */
+
+/* Pastikan semua elemen fixed dekorasi TIDAK menghalangi klik */
+.page-border-wrapper,
+.page-border-wrapper *,
+.petal-layer,
+.petal-layer *,
+.cover-stars,
+.cover-bg-glow,
+.section-bg-dots,
+.section-bg-lines,
+.opening-bg,
+.opening-overlay,
+.opening-particles,
+.opening-particles * {
+  pointer-events: none !important;
+}
+
+/* Pastikan elemen interaktif selalu bisa diklik */
+.floating-nav,
+.nav-btn,
+.music-player,
+.music-toggle,
+.copy-btn,
+.btn-submit,
+.btn-maps,
+.gallery-item,
+.lightbox-nav,
+.lightbox-close,
+#wish-submit,
+.op-btn-open,
+.btn-open-invitation,
+.action-btn,
+.footer-link,
+.guest-banner,
+.wish-form,
+.form-input,
+.form-textarea,
+.form-select {
+  pointer-events: auto !important;
+  position: relative;
+}
+
+/* Nav btn z-index paling tinggi setelah lightbox */
+.floating-nav { z-index: 500 !important; }
+.nav-btn      { z-index: 500 !important; cursor: pointer !important; }
+.music-player { z-index: 500 !important; }
+
+/* Gift section — rekening cards harus klikable */
+#gifts { isolation: isolate; }
+.gift-cards-wrap { position: relative; z-index: 2; }
+.atm-card { position: relative; z-index: 2; }
+.copy-btn { position: relative; z-index: 3; cursor: pointer !important; }
+
+/* Section wishes — form inputs */
+#wishes { isolation: isolate; }
+.wish-form { position: relative; z-index: 2; }
+
+/* Gallery items */
+#gallery { isolation: isolate; }
+.gallery-grid { position: relative; z-index: 2; }
+.gallery-item { cursor: pointer !important; }
