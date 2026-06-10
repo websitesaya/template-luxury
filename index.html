@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Undangan Pernikahan — Groom & Bride</title>
+  <meta name="description" content="Undangan Pernikahan Digital Mewah" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ═══════════════════════════════════════════════════
+   OPENING SCREEN — LAYOUT 2 ZONA (FOTO ATAS + TEKS BAWAH)
+   Tombol DIJAMIN selalu muncul di semua ukuran HP
+   ═══════════════════════════════════════════════════ */
+
+    /* Container: foto full background, konten di bawah */
+    #opening-screen {
+      position: fixed !important;
+      inset: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-end !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+    }
+
+    /* Foto latar: subjek di bagian atas/tengah */
+    #opening-screen .opening-bg {
+      background-position: center 12% !important;
+      background-size: cover !important;
+    }
+
+    /* Gradasi: foto terlihat jelas di atas, gelap halus ke bawah */
+    #opening-screen .opening-overlay {
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0)      0%,
+        rgba(0,0,0,0)      30%,
+        rgba(28,3,8,0.1)   42%,
+        rgba(28,3,8,0.65)  58%,
+        rgba(28,3,8,0.95)  75%,
+        rgba(28,3,8,1.0)  100%
+      ) !important;
+    }
+
+    /* Ornamen sudut */
+    .op-corner { position:absolute; z-index:3; pointer-events:none; }
+    .op-corner-tl { top:0; left:0; }
+    .op-corner-tr { top:0; right:0; transform:scaleX(-1); }
+
+    /* ── ZONA KONTEN BAWAH ── */
+    /* Menggunakan position absolute di bottom agar tidak overflow */
+    .op-content-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 5;
+      padding: 14px 22px 20px;
+      text-align: center;
+      /* Tidak ada min-height — konten mengikuti isinya */
+    }
+
+    /* Tag "Undangan Pernikahan" */
+    .op-tag-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-bottom: 4px;
+      opacity: 0;
+      animation: fuUp .7s ease .3s forwards;
+    }
+    .op-tag-line {
+      height: 1px; width: 32px;
+      background: linear-gradient(90deg, transparent, #c9963a);
+    }
+    .op-tag-line-r {
+      background: linear-gradient(90deg, #c9963a, transparent) !important;
+    }
+    .op-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 8.5px; letter-spacing: 4px;
+      color: var(--gold-light); text-transform: uppercase;
+    }
+
+    /* Nama Pria */
+    .op-groom {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(42px, 11.5vw, 64px);
+      color: #fff;
+      line-height: 1.0;
+      text-shadow: 0 0 35px rgba(168,114,42,.75), 0 2px 12px rgba(0,0,0,.85);
+      opacity: 0;
+      animation: fuLeft .85s ease .48s forwards;
+      margin-bottom: -2px;
+      display: block;
+    }
+
+    /* Pemisah & */
+    .op-amp {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; margin: 0;
+      opacity: 0; animation: fuUp .7s ease .64s forwards;
+    }
+    .op-amp-line {
+      display: block; height: 1px; width: 36px;
+      background: linear-gradient(135deg, #a8722a 0%, #e2b85a 50%, #a8722a 100%);
+    }
+    .op-amp-sym {
+      font-family: 'Cinzel', serif;
+      font-size: 14px; color: var(--gold); letter-spacing: 4px;
+    }
+
+    /* Nama Wanita */
+    .op-bride {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(42px, 11.5vw, 64px);
+      color: #fff;
+      line-height: 1.0;
+      text-shadow: 0 0 35px rgba(168,114,42,.75), 0 2px 12px rgba(0,0,0,.85);
+      opacity: 0;
+      animation: fuRight .85s ease .8s forwards;
+      margin-top: -2px;
+      display: block;
+    }
+
+    /* Tanggal */
+    .op-date-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; margin: 8px 0 5px;
+      opacity: 0; animation: fuUp .7s ease .94s forwards;
+    }
+    .op-date-dot { color: var(--gold); font-size: 6px; opacity: .6; }
+    .op-date {
+      font-family: 'Cinzel', serif;
+      font-size: 9.5px; letter-spacing: 2px;
+      color: var(--rose-pale); text-transform: uppercase;
+    }
+
+    /* Tagline */
+    .op-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 13.5px;
+      color: rgba(255,255,255,.65);
+      margin: 0 0 14px; line-height: 1.4;
+      opacity: 0; animation: fuUp .7s ease 1.08s forwards;
+    }
+
+    /* ── TOMBOL — CENTER, SELALU MUNCUL ── */
+    .op-btn-open {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 9px;
+      background: linear-gradient(135deg,#a8722a 0%,#e2b85a 50%,#a8722a 100%);
+      color: #1c0308;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      padding: 13px 30px;
+      border: none;
+      cursor: pointer;
+      clip-path: polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);
+      box-shadow: 0 6px 28px rgba(168,114,42,.55);
+      position: relative;
+      overflow: hidden;
+      transition: all .35s;
+      opacity: 0;
+      animation: fuUp .85s ease 1.22s forwards;
+    }
+    .op-btn-open::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,transparent 50%);
+      transform:translateX(-100%); transition:transform .5s;
+    }
+    .op-btn-open:hover::before { transform:translateX(100%); }
+    .op-btn-open:hover {
+      box-shadow: 0 10px 36px rgba(168,114,42,.7);
+      transform: translateY(-2px);
+    }
+
+    /* Chevron hint */
+    .op-chevron-wrap {
+      margin-top: 10px; display:flex; justify-content:center;
+      opacity:0; animation:fuUp .7s ease 1.75s forwards;
+    }
+    .op-chevron {
+      width:12px; height:12px;
+      border-right: 1.5px solid rgba(201,152,58,.45);
+      border-bottom: 1.5px solid rgba(201,152,58,.45);
+      transform: rotate(45deg);
+      animation: chevBounce 1.8s ease-in-out infinite;
+    }
+    @keyframes chevBounce {
+      0%,100% { transform:rotate(45deg) translateY(0); }
+      50%      { transform:rotate(45deg) translateY(4px); }
+    }
+
+    /* ── ADAPTASI LAYAR PENDEK ── */
+    /* Sembunyikan elemen tidak kritis agar tombol selalu muncul */
+    @media (max-height: 700px) {
+      .op-tagline { display: none !important; }
+      .op-chevron-wrap { display: none !important; }
+      .op-content-wrap { padding: 10px 20px 16px; }
+    }
+    @media (max-height: 600px) {
+      .op-date-row { display: none !important; }
+      .op-tag-wrap { display: none !important; }
+    }
+
+    /* ── COUNTDOWN WIDGET (di section cover, bukan opening) ── */
+    /* Countdown widget */
+ */
+    .countdown-section {
+      background: rgba(13,31,60,0.6);
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 28px 20px;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .countdown-section::before,
+    .countdown-section::after {
+      content: '';
+      position: absolute;
+      width: 20px; height: 20px;
+      border-color: var(--gold); border-style: solid;
+      opacity: 0.4;
+    }
+    .countdown-section::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
+    .countdown-section::after { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
+
+    .countdown-label {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .cd-unit {
+      text-align: center;
+      min-width: 58px;
+    }
+
+    .cd-number {
+      font-family: 'Cinzel', serif;
+      font-size: 36px;
+      color: white;
+      line-height: 1;
+      display: block;
+      text-shadow: 0 0 20px rgba(201,168,76,0.4);
+    }
+
+    .cd-label {
+      font-family: 'Lato', sans-serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .cd-colon {
+      font-family: 'Cinzel', serif;
+      font-size: 32px;
+      color: var(--gold);
+      opacity: 0.5;
+      align-self: center;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.1; }
+    }
+
+    /* Location map embed */
+    .map-embed {
+      width: 100%;
+      height: 220px;
+      border: 1px solid rgba(201,168,76,0.2);
+      filter: invert(90%) hue-rotate(180deg) saturate(0.7) brightness(0.85);
+      display: block;
+      margin-top: 12px;
+    }
+
+    /* Gallery special items */
+    .gallery-item:first-child,
+    .gallery-item:nth-child(5) {
+      grid-column: span 2;
+      aspect-ratio: 16/9;
+    }
+
+    @media (max-width: 500px) {
+      .gallery-item:first-child,
+      .gallery-item:nth-child(5) {
+        grid-column: span 1;
+        aspect-ratio: 1;
+      }
+    }
+
+    /* Lightbox transition */
+    #lightbox-img {
+      transition: opacity 0.2s ease;
+    }
+
+    /* Verse quote styling */
+    .verse-block {
+      background: rgba(26,58,107,0.2);
+      border-left: 3px solid var(--gold);
+      padding: 16px 20px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .verse-block p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.8;
+      margin-bottom: 6px;
+    }
+
+    .verse-block .verse-source {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--gold);
+    }
+
+    /* Closing ring animation */
+    .ring-animation {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 24px;
+      position: relative;
+    }
+
+    .ring-outer {
+      width: 100%;
+      height: 100%;
+      border: 2px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      position: absolute;
+      animation: spinSlow 8s linear infinite;
+    }
+
+    .ring-inner {
+      width: 70%;
+      height: 70%;
+      border: 1px solid rgba(201,168,76,0.5);
+      border-radius: 50%;
+      position: absolute;
+      top: 15%;
+      left: 15%;
+      animation: spinSlow 5s linear infinite reverse;
+    }
+
+    .ring-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--gold);
+      font-size: 32px;
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Ornamental top/bottom section borders */
+    .section-ornament-top,
+    .section-ornament-bottom {
+      text-align: center;
+      color: var(--gold);
+      opacity: 0.3;
+      font-size: 18px;
+      letter-spacing: 12px;
+      padding: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ AUDIO ============ -->
+<audio id="bg-music" loop preload="auto">
+  <source src="Westlife - Beautiful in white (Lyrics).mp3" type="audio/mpeg" />
+</audio>
+
+<!-- ============ PETAL LAYER ============ -->
+<div class="petal-layer" id="petal-layer"></div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="global-toast"></div>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-nav lightbox-prev" onclick="prevPhoto()">‹</button>
+    <img id="lightbox-img" src="" alt="Foto Prewedding" style="transition:opacity 0.2s ease;" />
+    <button class="lightbox-nav lightbox-next" onclick="nextPhoto()">›</button>
+  </div>
+</div>
+
+<!-- ============ OPENING SCREEN ============ -->
+<div id="opening-screen">
+
+  <!-- Layer 1: Foto -->
+  <div class="opening-bg"></div>
+
+  <!-- Layer 2: Gradasi gelap bawah -->
+  <div class="opening-overlay"></div>
+
+  <!-- Layer 3: Partikel -->
+  <div class="opening-particles" id="opening-particles"></div>
+
+  <!-- Layer 4: Ornamen sudut -->
+  <div class="op-corner op-corner-tl">
+    <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+      <path d="M3 47L3 3L47 3" stroke="#c9963a" stroke-width="1.5"/>
+      <path d="M9 41L9 9L41 9" stroke="rgba(201,152,58,0.3)" stroke-width="1"/>
+      <circle cx="9" cy="9" r="2" fill="#c9963a" opacity="0.7"/>
+    </svg>
+  </div>
+  <div class="op-corner op-corner-tr">
+    <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+      <path d="M3 47L3 3L47 3" stroke="#c9963a" stroke-width="1.5"/>
+      <path d="M9 41L9 9L41 9" stroke="rgba(201,152,58,0.3)" stroke-width="1"/>
+      <circle cx="9" cy="9" r="2" fill="#c9963a" opacity="0.7"/>
+    </svg>
+  </div>
+
+  <!-- Layer 5: Konten teks + tombol (posisi absolut di bawah) -->
+  <div class="op-content-wrap">
+
+    <div class="op-tag-wrap">
+      <div class="op-tag-line"></div>
+      <span class="op-tag">Undangan Pernikahan</span>
+      <div class="op-tag-line op-tag-line-r"></div>
+    </div>
+
+    <div class="op-groom">Ahmad Rijal</div>
+    <div class="op-amp">
+      <span class="op-amp-line"></span>
+      <span class="op-amp-sym">&amp;</span>
+      <span class="op-amp-line"></span>
+    </div>
+    <div class="op-bride">Siti Aminah</div>
+
+    <div class="op-date-row">
+      <span class="op-date-dot">◆</span>
+      <span class="op-date">Jum'at &nbsp;·&nbsp; 12 Desember 2025 &nbsp;·&nbsp; Yogyakarta</span>
+      <span class="op-date-dot">◆</span>
+    </div>
+
+    <p class="op-tagline">"Menyempurnakan separuh agama dalam ikatan suci"</p>
+
+    <button class="op-btn-open" onclick="openInvitation()">
+      <i class="fas fa-envelope-open-text"></i>
+      &nbsp; Buka Undangan
+    </button>
+
+    <div class="op-chevron-wrap">
+      <div class="op-chevron"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ============ CURTAIN ============ -->
+<div class="curtain-container" id="curtain" style="display:none;">
+  <div class="curtain-left">
+    <div class="curtain-ornament">✦ Ahmad Rijal &amp; Siti Aminah ✦</div>
+  </div>
+  <div class="curtain-right"></div>
+</div>
+
+<!-- ============ MAIN INVITATION ============ -->
+<div id="main-invitation">
+
+  <!-- Guest Banner -->
+  <div class="guest-banner">
+    <span>Kepada Yth,</span>
+    <strong class="guest-name-display">Tamu Undangan</strong>
+    <span>✦</span>
+  </div>
+
+  <!-- Page Border -->
+  <div class="page-border-wrapper" id="page-border">
+    <div class="b-edge b-top"></div>
+    <div class="b-edge b-bottom"></div>
+    <div class="b-edge b-left"></div>
+    <div class="b-edge b-right"></div>
+    <div class="b-inner-top"></div>
+    <div class="b-inner-bottom"></div>
+    <div class="b-inner-left"></div>
+    <div class="b-inner-right"></div>
+
+    <!-- Corners -->
+    <div class="pbcorner tl">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 58 L2 2 L58 2" stroke="#c9963a" stroke-width="1.5" fill="none"/>
+        <path d="M10 50 L10 10 L50 10" stroke="rgba(201,168,76,0.4)" stroke-width="1" fill="none"/>
+        <circle cx="10" cy="10" r="3" fill="#c9963a" opacity="0.6"/>
+        <path d="M10 2 L10 10 M2 10 L10 10" stroke="#c9963a" stroke-width="1" opacity="0.5"/>
+        <text x="18" y="26" font-family="serif" font-size="14" fill="rgba(201,168,76,0.3)">✦</text>
+      </svg>
+    </div>
+    <div class="pbcorner tr">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 58 L2 2 L58 2" stroke="#c9963a" stroke-width="1.5" fill="none"/>
+        <path d="M10 50 L10 10 L50 10" stroke="rgba(201,168,76,0.4)" stroke-width="1" fill="none"/>
+        <circle cx="10" cy="10" r="3" fill="#c9963a" opacity="0.6"/>
+        <text x="18" y="26" font-family="serif" font-size="14" fill="rgba(201,168,76,0.3)">✦</text>
+      </svg>
+    </div>
+    <div class="pbcorner bl">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 58 L2 2 L58 2" stroke="#c9963a" stroke-width="1.5" fill="none"/>
+        <path d="M10 50 L10 10 L50 10" stroke="rgba(201,168,76,0.4)" stroke-width="1" fill="none"/>
+        <circle cx="10" cy="10" r="3" fill="#c9963a" opacity="0.6"/>
+        <text x="18" y="26" font-family="serif" font-size="14" fill="rgba(201,168,76,0.3)">✦</text>
+      </svg>
+    </div>
+    <div class="pbcorner br">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 58 L2 2 L58 2" stroke="#c9963a" stroke-width="1.5" fill="none"/>
+        <path d="M10 50 L10 10 L50 10" stroke="rgba(201,168,76,0.4)" stroke-width="1" fill="none"/>
+        <circle cx="10" cy="10" r="3" fill="#c9963a" opacity="0.6"/>
+        <text x="18" y="26" font-family="serif" font-size="14" fill="rgba(201,168,76,0.3)">✦</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Floating Nav -->
+  <nav class="floating-nav" id="floating-nav">
+    <a class="nav-btn" onclick="navigateTo('cover')" title="Cover">
+      <i class="fas fa-home"></i>
+      <span class="nav-tip">Cover</span>
+    </a>
+    <a class="nav-btn" onclick="navigateTo('couple')" title="Mempelai">
+      <i class="fas fa-heart"></i>
+      <span class="nav-tip">Mempelai</span>
+    </a>
+    <a class="nav-btn" onclick="navigateTo('love-story')" title="Love Story">
+      <i class="fas fa-book-open"></i>
+      <span class="nav-tip">Our Story</span>
+    </a>
+    <a class="nav-btn" onclick="navigateTo('events')" title="Acara">
+      <i class="fas fa-calendar-alt"></i>
+      <span class="nav-tip">Acara</span>
+    </a>
+    <a class="nav-btn" onclick="navigateTo('gallery')" title="Galeri">
+      <i class="fas fa-images"></i>
+      <span class="nav-tip">Galeri</span>
+    </a>
+    <a class="nav-btn" onclick="navigateTo('gifts')" title="Hadiah">
+      <i class="fas fa-gift"></i>
+      <span class="nav-tip">Hadiah</span>
+    </a>
+    <a class="nav-btn" onclick="navigateTo('wishes')" title="Ucapan">
+      <i class="fas fa-comment-dots"></i>
+      <span class="nav-tip">Ucapan</span>
+    </a>
+  </nav>
+
+  <!-- Music Player -->
+  <div class="music-player">
+    <button class="music-toggle" id="music-toggle">
+      <span id="music-icon">♫</span>
+    </button>
+    <div class="music-info">
+      <div class="song-title">Beautiful In White</div>
+      <div>Westlife</div>
+    </div>
+    <div class="music-bars paused" id="music-bars">
+      <div class="music-bar"></div>
+      <div class="music-bar"></div>
+      <div class="music-bar"></div>
+      <div class="music-bar"></div>
+    </div>
+  </div>
+
+  <!-- ========== SECTION: COVER ========== -->
+  <section id="cover">
+    <div class="cover-bg-glow"></div>
+    <div class="cover-stars" id="cover-stars"></div>
+
+    <!-- Elegant frame -->
+    <div class="cover-frame">
+      <div class="cover-corner tl"></div>
+      <div class="cover-corner tr"></div>
+      <div class="cover-corner bl"></div>
+      <div class="cover-corner br"></div>
+      <div class="cover-petal-tl">🌸</div>
+      <div class="cover-petal-tr">🌸</div>
+      <div class="cover-petal-bl">🌸</div>
+      <div class="cover-petal-br">🌸</div>
+    </div>
+
+    <div class="cover-content section-inner">
+      <p class="bismillah-text">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+      <p class="cover-invited">— Dengan Penuh Kebahagiaan Kami Mengundang —</p>
+
+      <div class="cover-names-wrap">
+        <span class="cover-groom">Ahmad Rijal</span>
+        <span class="cover-and">✦ &amp; ✦</span>
+        <span class="cover-bride">Siti Aminah</span>
+      </div>
+
+      <div class="gold-divider">
+        <div class="d-line"></div>
+        <div class="d-center">❖</div>
+        <div class="d-line"></div>
+      </div>
+
+      <div class="cover-date-badge">
+        <div class="date-text">JUM'AT · 12 DESEMBER 2025</div>
+      </div>
+
+      <div class="verse-block" style="margin-top:28px; max-width:480px;">
+        <p>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."</p>
+        <div class="verse-source">QS. Ar-Rum : 21</div>
+      </div>
+
+      <!-- Countdown -->
+      <div class="countdown-section reveal" id="countdown-wrap">
+        <div class="countdown-label">Menghitung Hari</div>
+        <div class="countdown-grid">
+          <div class="cd-unit">
+            <span class="cd-number" id="cd-days">00</span>
+            <div class="cd-label">Hari</div>
+          </div>
+          <div class="cd-colon">:</div>
+          <div class="cd-unit">
+            <span class="cd-number" id="cd-hours">00</span>
+            <div class="cd-label">Jam</div>
+          </div>
+          <div class="cd-colon">:</div>
+          <div class="cd-unit">
+            <span class="cd-number" id="cd-mins">00</span>
+            <div class="cd-label">Menit</div>
+          </div>
+          <div class="cd-colon">:</div>
+          <div class="cd-unit">
+            <span class="cd-number" id="cd-secs">00</span>
+            <div class="cd-label">Detik</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SECTION: COUPLE ========== -->
+  <section id="couple">
+    <div class="couple-bg"></div>
+    <div class="section-bg-dots"></div>
+
+    <div class="section-inner">
+      <div class="section-ornament-top">✦ ◆ ✦ ◆ ✦ ◆ ✦</div>
+
+      <div class="section-badge reveal">
+        <div class="badge-line"></div>
+        <span>Mempelai</span>
+        <div class="badge-line"></div>
+      </div>
+      <h2 class="section-title reveal reveal-delay-1">Yang Berbahagia</h2>
+      <p class="section-subtitle reveal reveal-delay-2">Dua hati yang disatukan dalam ikatan suci</p>
+
+      <div class="gold-divider reveal reveal-delay-3">
+        <div class="d-line"></div>
+        <div class="d-center">❖</div>
+        <div class="d-line"></div>
+      </div>
+
+      <div class="couple-grid">
+        <!-- Groom -->
+        <div class="couple-card reveal reveal-delay-1">
+          <div class="couple-photo-wrap">
+            <div class="couple-photo-frame-2"></div>
+            <div class="couple-photo-frame"></div>
+            <img class="couple-photo" src="Mempelai Pria.jpg" alt="Mempelai Pria" onerror="this.src='https://via.placeholder.com/180x220/1a3a6b/c9a84c?text=Groom'" />
+          </div>
+          <div class="couple-role">Mempelai Pria</div>
+          <div class="couple-name">Ahmad Rijal</div>
+          <div class="couple-fullname">Ahmad Rijal Delimana Fae</div>
+          <div class="couple-parents">
+            Putra dari<br/>
+            <span>Bapak H. Muhammad</span><br/>
+            &amp; <span>Ibu Hj. Fatimah</span>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="couple-divider reveal">
+          <div class="amp-line"></div>
+          <div class="amp">&amp;</div>
+          <div class="amp-line"></div>
+        </div>
+
+        <!-- Bride -->
+        <div class="couple-card reveal reveal-delay-2">
+          <div class="couple-photo-wrap">
+            <div class="couple-photo-frame-2"></div>
+            <div class="couple-photo-frame" style="transform:rotate(-3deg)"></div>
+            <img class="couple-photo" src="Mempelai Wanita.jpg" alt="Mempelai Wanita" onerror="this.src='https://via.placeholder.com/180x220/1a3a6b/c9a84c?text=Bride'" />
+          </div>
+          <div class="couple-role">Mempelai Wanita</div>
+          <div class="couple-name">Siti Aminah</div>
+          <div class="couple-fullname">Siti Aminah Binti Abdullah</div>
+          <div class="couple-parents">
+            Putri dari<br/>
+            <span>Bapak H. Abdullah</span><br/>
+            &amp; <span>Ibu Hj. Khadijah</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-ornament-bottom reveal">✦ ◆ ✦ ◆ ✦ ◆ ✦</div>
+    </div>
+  </section>
+
+  <!-- ========== SECTION: LOVE STORY ========== -->
+  <section id="love-story">
+    <div class="section-bg-lines"></div>
+
+    <div class="section-inner">
+      <div class="section-badge reveal">
+        <div class="badge-line"></div>
+        <span>Our Story</span>
+        <div class="badge-line"></div>
+      </div>
+      <h2 class="section-title reveal reveal-delay-1">Our Love Story</h2>
+      <p class="section-subtitle reveal reveal-delay-2">Setiap pertemuan adalah bagian dari rencana-Nya yang indah</p>
+
+      <div class="timeline reveal reveal-delay-3">
+
+        <div class="timeline-item">
+          <div class="timeline-content" style="grid-column:1; text-align:right;">
+            <div class="timeline-year">2019</div>
+            <div class="timeline-title">Pertemuan Pertama</div>
+            <div class="timeline-desc">Sebuah pertemuan tak terduga yang mengubah segalanya, dua jiwa bertemu dalam satu momen yang penuh makna.</div>
+          </div>
+          <div class="timeline-dot" style="grid-column:2; grid-row:1;"><i class="fas fa-star" style="font-size:10px;"></i></div>
+          <div style="grid-column:3;"></div>
+        </div>
+
+        <div class="timeline-item">
+          <div style="grid-column:1;"></div>
+          <div class="timeline-dot" style="grid-column:2; grid-row:1;"><i class="fas fa-heart" style="font-size:10px;"></i></div>
+          <div class="timeline-content" style="grid-column:3; text-align:left;">
+            <div class="timeline-year">2020</div>
+            <div class="timeline-title">Jatuh Hati</div>
+            <div class="timeline-desc">Rasa yang perlahan tumbuh menjadi cinta yang tulus, menjadikan setiap hari lebih berwarna dan bermakna.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-content" style="grid-column:1; text-align:right;">
+            <div class="timeline-year">2022</div>
+            <div class="timeline-title">Menjalin Komitmen</div>
+            <div class="timeline-desc">Dengan restu keluarga, kami memantapkan hati untuk melangkah bersama menuju jenjang yang lebih serius.</div>
+          </div>
+          <div class="timeline-dot" style="grid-column:2; grid-row:1;"><i class="fas fa-ring" style="font-size:10px;"></i></div>
+          <div style="grid-column:3;"></div>
+        </div>
+
+        <div class="timeline-item">
+          <div style="grid-column:1;"></div>
+          <div class="timeline-dot" style="grid-column:2; grid-row:1;"><i class="fas fa-camera" style="font-size:10px;"></i></div>
+          <div class="timeline-content" style="grid-column:3; text-align:left;">
+            <div class="timeline-year">2024</div>
+            <div class="timeline-title">Prewedding</div>
+            <div class="timeline-desc">Mengabadikan setiap momen kebersamaan kami sebelum hari yang paling ditunggu-tunggu tiba.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-content" style="grid-column:1; text-align:right;">
+            <div class="timeline-year">2025</div>
+            <div class="timeline-title">Menuju Pelaminan</div>
+            <div class="timeline-desc">Saatnya menyempurnakan separuh agama, bersatu dalam ikatan pernikahan yang suci dan penuh berkah.</div>
+          </div>
+          <div class="timeline-dot" style="grid-column:2; grid-row:1;" style="background:var(--gold); border-color:var(--gold-light);"><i class="fas fa-gem" style="font-size:10px; color:var(--deep-navy);"></i></div>
+          <div style="grid-column:3;"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SECTION: EVENTS ========== -->
+  <section id="events">
+    <div class="section-bg-dots"></div>
+
+    <div class="section-inner">
+      <div class="section-badge reveal">
+        <div class="badge-line"></div>
+        <span>Rangkaian Acara</span>
+        <div class="badge-line"></div>
+      </div>
+      <h2 class="section-title reveal reveal-delay-1">Hadir &amp; Doakan Kami</h2>
+      <p class="section-subtitle reveal reveal-delay-2">Kehadiran Anda adalah kebahagiaan terbesar bagi kami</p>
+
+      <div class="events-grid">
+        <!-- Akad Nikah -->
+        <div class="event-card reveal reveal-delay-1">
+          <div class="event-corner-tl"></div>
+          <div class="event-corner-br"></div>
+          <span class="event-icon">🕌</span>
+          <div class="event-type">Ijab Qabul</div>
+          <div class="event-name">Akad Nikah</div>
+
+          <div class="event-detail">
+            <span class="event-detail-icon"><i class="fas fa-calendar"></i></span>
+            <div class="event-detail-text">Jum'at, 12 Desember 2025</div>
+          </div>
+          <div class="event-detail">
+            <span class="event-detail-icon"><i class="fas fa-clock"></i></span>
+            <div class="event-detail-text">08.00 – 10.00 WITA</div>
+          </div>
+          <div class="event-detail">
+            <span class="event-detail-icon"><i class="fas fa-map-marker-alt"></i></span>
+            <div class="event-detail-text">Masjid Agung Al-Munawaroh<br/>Jl. Sudirman No. 1, Kota</div>
+          </div>
+
+          <a class="btn-maps" href="https://maps.google.com/?q=Masjid+Agung+Al-Munawaroh" target="_blank">
+            <i class="fas fa-map-marker-alt"></i>
+            Buka Google Maps
+          </a>
+
+          <iframe
+            class="map-embed"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.39553735418!2d110.30485!3d-7.79558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5a3ad4ee3e87%3A0x5927b33c7041470!2sYogyakarta%2C+Indonesia!5e0!3m2!1sid!2sid!4v1"
+            allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Lokasi Akad Nikah">
+          </iframe>
+        </div>
+
+        <!-- Resepsi -->
+        <div class="event-card reveal reveal-delay-2">
+          <div class="event-corner-tl"></div>
+          <div class="event-corner-br"></div>
+          <span class="event-icon">💍</span>
+          <div class="event-type">Walimatul Ursy</div>
+          <div class="event-name">Resepsi Pernikahan</div>
+
+          <div class="event-detail">
+            <span class="event-detail-icon"><i class="fas fa-calendar"></i></span>
+            <div class="event-detail-text">Jum'at, 12 Desember 2025</div>
+          </div>
+          <div class="event-detail">
+            <span class="event-detail-icon"><i class="fas fa-clock"></i></span>
+            <div class="event-detail-text">11.00 – 16.00 WITA</div>
+          </div>
+          <div class="event-detail">
+            <span class="event-detail-icon"><i class="fas fa-map-marker-alt"></i></span>
+            <div class="event-detail-text">Gedung Graha Sari<br/>Jl. Pahlawan No. 25, Kota</div>
+          </div>
+
+          <a class="btn-maps" href="https://maps.google.com/?q=Gedung+Graha+Sari" target="_blank">
+            <i class="fas fa-map-marker-alt"></i>
+            Buka Google Maps
+          </a>
+
+          <iframe
+            class="map-embed"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.39553735418!2d110.30485!3d-7.79558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5a3ad4ee3e87%3A0x5927b33c7041470!2sYogyakarta%2C+Indonesia!5e0!3m2!1sid!2sid!4v1"
+            allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Lokasi Resepsi">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SECTION: GALLERY ========== -->
+  <section id="gallery">
+    <div class="section-bg-lines"></div>
+    <div class="section-inner">
+      <div class="section-badge reveal">
+        <div class="badge-line"></div>
+        <span>Galeri Foto</span>
+        <div class="badge-line"></div>
+      </div>
+      <h2 class="section-title reveal reveal-delay-1">Momen Terindah</h2>
+      <p class="section-subtitle reveal reveal-delay-2">Kenangan yang terukir indah sebelum hari bahagia kami</p>
+
+      <div class="gallery-grid reveal reveal-delay-3">
+        <!-- 20 gallery items -->
+        <div class="gallery-item"><img src="Foto1.jpg" alt="Foto 1" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto2.jpg" alt="Foto 2" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto3.jpg" alt="Foto 3" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto4.jpg" alt="Foto 4" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto5.jpg" alt="Foto 5" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto6.jpg" alt="Foto 6" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto7.jpg" alt="Foto 7" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto8.jpg" alt="Foto 8" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto9.jpg" alt="Foto 9" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto10.jpg" alt="Foto 10" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto11.jpg" alt="Foto 11" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto12.jpg" alt="Foto 12" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto13.jpg" alt="Foto 13" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto14.jpg" alt="Foto 14" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto15.jpg" alt="Foto 15" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto16.jpg" alt="Foto 16" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto17.jpg" alt="Foto 17" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto18.jpg" alt="Foto 18" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto19.jpg" alt="Foto 19" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+        <div class="gallery-item"><img src="Foto20.jpg" alt="Foto 20" loading="lazy" onerror="this.parentElement.style.background='#1a3a6b'"/><div class="gallery-overlay"><span>🔍</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SECTION: GIFTS ========== -->
+  <section id="gifts">
+    <div class="section-bg-dots"></div>
+    <div class="section-inner">
+      <div class="section-badge reveal">
+        <div class="badge-line"></div>
+        <span>Hadiah Pernikahan</span>
+        <div class="badge-line"></div>
+      </div>
+      <h2 class="section-title reveal reveal-delay-1">Kirim Hadiah</h2>
+      <p class="section-subtitle reveal reveal-delay-2">Doa dan kehadiran Anda adalah hadiah terbaik bagi kami. Namun jika ingin memberikan hadiah lainnya, berikut informasi rekening kami.</p>
+
+      <div class="gift-cards-wrap">
+        <!-- Card Pria -->
+        <div class="reveal reveal-delay-1">
+          <div class="atm-card">
+            <div class="card-chip"></div>
+            <div class="card-bank-name">Bank BCA</div>
+            <div class="card-number">1234 5678 9012 3456</div>
+            <div class="card-footer">
+              <div>
+                <div class="card-holder-label">Card Holder</div>
+                <div class="card-holder">Ahmad Rijal</div>
+              </div>
+              <div class="card-contactless">◎</div>
+            </div>
+          </div>
+          <button class="copy-btn" data-copy="1234567890123456">
+            <i class="fas fa-copy"></i> Salin Nomor Rekening
+          </button>
+        </div>
+
+        <!-- Card Wanita -->
+        <div class="reveal reveal-delay-2">
+          <div class="atm-card" style="background: linear-gradient(135deg, #1a3060 0%, #2a1a5e 50%, #1a3060 100%);">
+            <div class="card-chip"></div>
+            <div class="card-bank-name">Bank Mandiri</div>
+            <div class="card-number">9876 5432 1098 7654</div>
+            <div class="card-footer">
+              <div>
+                <div class="card-holder-label">Card Holder</div>
+                <div class="card-holder">Siti Aminah</div>
+              </div>
+              <div class="card-contactless">◎</div>
+            </div>
+          </div>
+          <button class="copy-btn" data-copy="9876543210987654">
+            <i class="fas fa-copy"></i> Salin Nomor Rekening
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SECTION: WISHES ========== -->
+  <section id="wishes">
+    <div class="section-bg-lines"></div>
+    <div class="section-inner">
+      <div class="section-badge reveal">
+        <div class="badge-line"></div>
+        <span>Ucapan &amp; Doa</span>
+        <div class="badge-line"></div>
+      </div>
+      <h2 class="section-title reveal reveal-delay-1">Ucapan &amp; Doa</h2>
+      <p class="section-subtitle reveal reveal-delay-2">Sampaikan ucapan dan doa terbaik Anda untuk kebahagiaan kami</p>
+
+      <!-- Form -->
+      <div class="wish-form reveal reveal-delay-3">
+        <div class="form-group">
+          <label class="form-label" for="wish-name">Nama Anda</label>
+          <input class="form-input" id="wish-name" type="text" placeholder="Masukkan nama Anda..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="wish-attendance">Konfirmasi Kehadiran</label>
+          <select class="form-select" id="wish-attendance">
+            <option value="hadir">✓ Insya Allah Hadir</option>
+            <option value="tidak">✗ Tidak Dapat Hadir</option>
+            <option value="mungkin">◎ Mungkin Hadir</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="wish-message">Ucapan &amp; Doa</label>
+          <textarea class="form-textarea" id="wish-message" rows="4" placeholder="Tulis ucapan dan doa terbaik Anda untuk kami..."></textarea>
+        </div>
+        <button class="btn-submit" id="wish-submit" onclick="submitWish()">
+          <i class="fas fa-paper-plane"></i> &nbsp; KIRIM UCAPAN
+        </button>
+      </div>
+
+      <!-- Wishes List -->
+      <div class="wishes-list" id="wishes-list">
+        <div class="loading-spinner">Memuat ucapan</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SECTION: CLOSING ========== -->
+  <section id="closing">
+    <div class="cover-stars" id="closing-stars"></div>
+    <div class="section-inner closing-content">
+
+      <div class="ring-animation reveal">
+        <div class="ring-outer"></div>
+        <div class="ring-inner"></div>
+        <div class="ring-center">💍</div>
+      </div>
+
+      <div class="section-badge reveal reveal-delay-1" style="justify-content:center;">
+        <div class="badge-line"></div>
+        <span>Penutup</span>
+        <div class="badge-line"></div>
+      </div>
+
+      <h2 class="section-title reveal reveal-delay-2">Terima Kasih</h2>
+
+      <div class="closing-quote reveal reveal-delay-3">
+        Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan do'a restu kepada kami.
+      </div>
+
+      <div class="closing-names reveal reveal-delay-4">
+        Ahmad Rijal &amp; Siti Aminah
+      </div>
+
+      <div class="gold-divider reveal reveal-delay-5">
+        <div class="d-line"></div>
+        <div class="d-center">❖</div>
+        <div class="d-line"></div>
+      </div>
+
+      <div class="closing-thanksmsg reveal">
+        Kami Yang Berbahagia<br/>
+        Memohon Doa Restu &amp; Kehadiran Anda<br/>
+        <br/>
+        <span style="color:var(--gold); font-size:20px;">— Jazakumullahu Khairan —</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <div class="footer-brand">Zhald_Design</div>
+    <div class="footer-by">Design &amp; Development by</div>
+
+    <div class="footer-links">
+      <a class="footer-link" href="https://instagram.com/rijaldelimanafe" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        @rijaldelimanafe
+      </a>
+      <a class="footer-link" href="https://wa.me/6281338596854" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        081338596854
+      </a>
+    </div>
+
+    <div style="margin-top:16px; font-family:'Cinzel',serif; font-size:9px; letter-spacing:3px; color:rgba(255,255,255,0.2);">
+      © 2025 ZHALD_DESIGN · ALL RIGHTS RESERVED
+    </div>
+  </footer>
+
+</div><!-- end #main-invitation -->
+
+<script src="script.js"></script>
+
+<script>
+  // Extra: init closing stars same as cover stars
+  (function() {
+    const c = document.getElementById('closing-stars');
+    if (!c) return;
+    for (let i = 0; i < 50; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${Math.random()*4+2}s;animation-delay:${Math.random()*4}s;width:${Math.random()*2+1}px;height:${Math.random()*2+1}px;`;
+      c.appendChild(s);
+    }
+  })();
+</script>
+</body>
+</html>

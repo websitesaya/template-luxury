@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Undangan — Zhald_Design</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --maroon: #6b1528;
+      --maroon-deep: #2e0710;
+      --gold: #c9963a;
+      --gold-light: #e8c97a;
+      --rose-pale: #a8c4e8;
+      --cream: #faf8f3;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--maroon-deep);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px;
+      overflow-x: hidden;
+    }
+
+    /* Background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(38,85,160,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(168,114,42,0.08) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Page border */
+    .page-borders { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+    .pb { position: absolute; background: linear-gradient(135deg, #c9963a 0%, #e8c97a 50%, #c9963a 100%); }
+    .pb-top { top: 0; left: 0; right: 0; height: 3px; }
+    .pb-bottom { bottom: 0; left: 0; right: 0; height: 3px; }
+    .pb-left { left: 0; top: 0; bottom: 0; width: 3px; }
+    .pb-right { right: 0; top: 0; bottom: 0; width: 3px; }
+
+    /* Corner pieces */
+    .pb-corner {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      z-index: 2;
+    }
+    .pb-corner.tl { top: 0; left: 0; }
+    .pb-corner.tr { top: 0; right: 0; transform: scaleX(-1); }
+    .pb-corner.bl { bottom: 0; left: 0; transform: scaleY(-1); }
+    .pb-corner.br { bottom: 0; right: 0; transform: scale(-1); }
+
+    /* Main container */
+    .generator-wrap {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .gen-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .gen-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .gen-badge .bl { height: 1px; width: 40px; background: linear-gradient(135deg, #c9963a 0%, #e8c97a 50%, #c9963a 100%); }
+    .gen-badge span {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .gen-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(40px, 9vw, 60px);
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .gen-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 16px;
+      color: var(--rose-pale);
+    }
+
+    /* Divider */
+    .gold-div {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .gold-div .dl { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .gold-div .dc { color: var(--gold); font-size: 16px; }
+
+    /* Wedding info card */
+    .wedding-info {
+      background: rgba(26,58,107,0.2);
+      border: 1px solid rgba(168,114,42,0.2);
+      padding: 20px 24px;
+      margin-bottom: 28px;
+      text-align: center;
+      position: relative;
+    }
+
+    .wedding-info::before, .wedding-info::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      border-color: var(--gold); border-style: solid;
+      opacity: 0.4;
+    }
+    .wedding-info::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
+    .wedding-info::after { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
+
+    .wi-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 28px;
+      color: var(--gold-light);
+      margin-bottom: 6px;
+    }
+
+    .wi-date {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* Form card */
+    .gen-card {
+      background: rgba(28,3,8,0.8);
+      border: 1px solid rgba(168,114,42,0.25);
+      padding: 32px;
+      position: relative;
+      backdrop-filter: blur(8px);
+    }
+
+    .gen-card::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(168,114,42,0.08);
+      pointer-events: none;
+    }
+
+    .form-group { margin-bottom: 20px; }
+
+    .form-label {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(26,58,107,0.4);
+      border: 1px solid rgba(168,114,42,0.3);
+      color: white;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      padding: 14px 18px;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      border-radius: 0;
+    }
+
+    .form-input::placeholder { color: rgba(255,255,255,0.3); }
+    .form-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(168,114,42,0.1);
+    }
+
+    .btn-generate {
+      width: 100%;
+      background: linear-gradient(135deg, #c9963a 0%, #e8c97a 50%, #c9963a 100%);
+      border: none;
+      color: var(--maroon-deep);
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
+    }
+
+    .btn-generate:hover {
+      box-shadow: 0 8px 30px rgba(168,114,42,0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Result card */
+    .result-card {
+      display: none;
+      margin-top: 24px;
+      background: rgba(26,58,107,0.25);
+      border: 1px solid rgba(168,114,42,0.3);
+      padding: 24px;
+      animation: slideIn 0.5s ease;
+      position: relative;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-card::before, .result-card::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      border-color: var(--gold); border-style: solid;
+      opacity: 0.5;
+    }
+    .result-card::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
+    .result-card::after { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
+
+    .result-label {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .result-guest {
+      font-family: 'Great Vibes', cursive;
+      font-size: 28px;
+      color: var(--gold-light);
+      margin-bottom: 14px;
+    }
+
+    .result-url {
+      display: block;
+      background: rgba(28,3,8,0.8);
+      border: 1px solid rgba(168,114,42,0.2);
+      padding: 12px 14px;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      color: var(--rose-pale);
+      word-break: break-all;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .result-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 8px;
+      border: 1px solid rgba(168,114,42,0.3);
+      background: transparent;
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .action-btn:hover {
+      background: rgba(168,114,42,0.15);
+      border-color: var(--gold);
+    }
+
+    .action-btn i { font-size: 18px; }
+
+    /* WA btn special */
+    .action-btn.wa { border-color: rgba(37,211,102,0.3); color: #25d366; }
+    .action-btn.wa:hover { background: rgba(37,211,102,0.1); border-color: #25d366; }
+
+    .action-btn.ig { border-color: rgba(225,48,108,0.3); color: #e1306c; }
+    .action-btn.ig:hover { background: rgba(225,48,108,0.1); border-color: #e1306c; }
+
+    /* History section */
+    .history-section {
+      margin-top: 28px;
+    }
+
+    .history-title {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .history-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(168,114,42,0.2);
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(26,58,107,0.15);
+      border: 1px solid rgba(168,114,42,0.1);
+      padding: 10px 14px;
+      transition: border-color 0.3s;
+    }
+
+    .history-item:hover { border-color: rgba(168,114,42,0.3); }
+
+    .history-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      flex: 1;
+    }
+
+    .history-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .h-btn {
+      width: 32px;
+      height: 32px;
+      background: transparent;
+      border: 1px solid rgba(168,114,42,0.3);
+      color: var(--gold);
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .h-btn:hover { background: rgba(168,114,42,0.15); }
+    .h-btn.wa { border-color: rgba(37,211,102,0.3); color: #25d366; }
+    .h-btn.wa:hover { background: rgba(37,211,102,0.1); }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid rgba(255,100,100,0.3);
+      color: rgba(255,100,100,0.6);
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      padding: 6px 12px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s;
+    }
+
+    .clear-btn:hover { background: rgba(255,100,100,0.1); border-color: rgba(255,100,100,0.5); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(28,3,8,0.97);
+      border: 1px solid rgba(168,114,42,0.4);
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      padding: 12px 24px;
+      z-index: 9999;
+      opacity: 0;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-bottom: 28px;
+      transition: color 0.3s;
+    }
+    .back-link:hover { color: var(--gold); }
+
+    /* Footer */
+    .gen-footer {
+      margin-top: 40px;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid rgba(168,114,42,0.1);
+    }
+
+    .gen-footer .brand {
+      font-family: 'Great Vibes', cursive;
+      font-size: 26px;
+      color: var(--gold);
+    }
+
+    .gen-footer .by {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 480px) {
+      .result-actions { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Page borders -->
+<div class="page-borders">
+  <div class="pb pb-top"></div>
+  <div class="pb pb-bottom"></div>
+  <div class="pb pb-left"></div>
+  <div class="pb pb-right"></div>
+  <svg class="pb-corner tl" viewBox="0 0 50 50" fill="none">
+    <path d="M2 48L2 2L48 2" stroke="#c9963a" stroke-width="1.5"/>
+    <circle cx="8" cy="8" r="2.5" fill="#c9963a" opacity="0.6"/>
+  </svg>
+  <svg class="pb-corner tr" viewBox="0 0 50 50" fill="none">
+    <path d="M2 48L2 2L48 2" stroke="#c9963a" stroke-width="1.5"/>
+    <circle cx="8" cy="8" r="2.5" fill="#c9963a" opacity="0.6"/>
+  </svg>
+  <svg class="pb-corner bl" viewBox="0 0 50 50" fill="none">
+    <path d="M2 48L2 2L48 2" stroke="#c9963a" stroke-width="1.5"/>
+    <circle cx="8" cy="8" r="2.5" fill="#c9963a" opacity="0.6"/>
+  </svg>
+  <svg class="pb-corner br" viewBox="0 0 50 50" fill="none">
+    <path d="M2 48L2 2L48 2" stroke="#c9963a" stroke-width="1.5"/>
+    <circle cx="8" cy="8" r="2.5" fill="#c9963a" opacity="0.6"/>
+  </svg>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<div class="generator-wrap">
+
+  <a class="back-link" href="index.html">
+    <i class="fas fa-arrow-left"></i> Kembali ke Undangan
+  </a>
+
+  <!-- Header -->
+  <div class="gen-header">
+    <div class="gen-badge">
+      <div class="bl"></div>
+      <span>Zhald Design</span>
+      <div class="bl"></div>
+    </div>
+    <h1 class="gen-title">Generator Undangan</h1>
+    <p class="gen-subtitle">Buat tautan undangan personal untuk setiap tamu</p>
+  </div>
+
+  <!-- Wedding Info -->
+  <div class="wedding-info">
+    <div class="wi-names">Ahmad Rijal &amp; Siti Aminah</div>
+    <div class="wi-date">JUM'AT · 12 DESEMBER 2025 · YOGYAKARTA</div>
+  </div>
+
+  <div class="gold-div">
+    <div class="dl"></div>
+    <div class="dc">❖</div>
+    <div class="dl"></div>
+  </div>
+
+  <!-- Generator Card -->
+  <div class="gen-card">
+    <div class="form-group">
+      <label class="form-label" for="guest-input">
+        <i class="fas fa-user"></i> &nbsp; Nama Tamu Undangan
+      </label>
+      <input
+        class="form-input"
+        id="guest-input"
+        type="text"
+        placeholder="Masukkan nama tamu..."
+        onkeydown="if(event.key==='Enter') generateLink()"
+      />
+    </div>
+
+    <button class="btn-generate" onclick="generateLink()">
+      <i class="fas fa-magic"></i> &nbsp; BUAT LINK UNDANGAN
+    </button>
+
+    <!-- Result -->
+    <div class="result-card" id="result-card">
+      <div class="result-label">✦ Link Undangan Untuk</div>
+      <div class="result-guest" id="result-guest-name">—</div>
+
+      <div class="result-url" id="result-url-display">—</div>
+
+      <div class="result-actions">
+        <button class="action-btn" onclick="copyLink()">
+          <i class="fas fa-copy"></i>
+          Salin Link
+        </button>
+        <a class="action-btn wa" id="wa-share-btn" href="#" target="_blank">
+          <i class="fab fa-whatsapp"></i>
+          WhatsApp
+        </a>
+        <button class="action-btn ig" onclick="copyForIG()">
+          <i class="fab fa-instagram"></i>
+          Instagram
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="history-section" id="history-section" style="display:none;">
+    <div class="history-title">Riwayat Tamu</div>
+    <div class="history-list" id="history-list"></div>
+    <button class="clear-btn" onclick="clearHistory()">
+      <i class="fas fa-trash"></i> Hapus Semua Riwayat
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <div class="gen-footer">
+    <div class="brand">Zhald_Design</div>
+    <div class="by">Wedding Digital Invitation Specialist</div>
+    <div style="margin-top:10px; display:flex; justify-content:center; gap:16px;">
+      <a href="https://instagram.com/rijaldelimanafe" target="_blank"
+        style="color:rgba(255,255,255,0.4); font-size:13px; text-decoration:none; transition:color .3s;"
+        onmouseover="this.style.color='#e1306c'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+        <i class="fab fa-instagram"></i> @rijaldelimanafe
+      </a>
+      <a href="https://wa.me/6281338596854" target="_blank"
+        style="color:rgba(255,255,255,0.4); font-size:13px; text-decoration:none; transition:color .3s;"
+        onmouseover="this.style.color='#25d366'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+        <i class="fab fa-whatsapp"></i> 081338596854
+      </a>
+    </div>
+  </div>
+
+</div><!-- end generator-wrap -->
+
+<script>
+  // Base URL — ganti dengan URL hosting Anda
+  const BASE_URL = window.location.origin + window.location.pathname.replace('generator.html', 'index.html');
+
+  let currentLink = '';
+  let history_data = JSON.parse(localStorage.getItem('wedding_guest_history') || '[]');
+
+  function generateLink() {
+    const input = document.getElementById('guest-input');
+    const name = input.value.trim();
+
+    if (!name) {
+      showToast('Mohon masukkan nama tamu ✦');
+      input.focus();
+      return;
+    }
+
+    const encoded = encodeURIComponent(name);
+    currentLink = `${BASE_URL}?to=${encoded}`;
+
+    // Show result
+    const resultCard = document.getElementById('result-card');
+    const guestName = document.getElementById('result-guest-name');
+    const urlDisplay = document.getElementById('result-url-display');
+    const waBtn = document.getElementById('wa-share-btn');
+
+    guestName.textContent = name;
+    urlDisplay.textContent = currentLink;
+
+    // WhatsApp message
+    const waMsg = encodeURIComponent(
+      `Assalamu'alaikum wr. wb.\n\n` +
+      `Kepada Yth.\n*${name}*\n\n` +
+      `Dengan penuh kebahagiaan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara pernikahan kami:\n\n` +
+      `💑 *Ahmad Rijal & Siti Aminah*\n` +
+      `📅 Jum'at, 12 Desember 2025\n` +
+      `📍 Yogyakarta\n\n` +
+      `Berikut link undangan digital kami:\n${currentLink}\n\n` +
+      `Kehadiran Anda adalah kehormatan terbesar bagi kami 🌸\n\n` +
+      `Wassalamu'alaikum wr. wb.`
+    );
+    waBtn.href = `https://wa.me/?text=${waMsg}`;
+
+    resultCard.style.display = 'block';
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Save to history
+    addToHistory(name);
+  }
+
+  function copyLink() {
+    if (!currentLink) return;
+    navigator.clipboard.writeText(currentLink).then(() => {
+      showToast('Link berhasil disalin ✦');
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = currentLink;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('Link berhasil disalin ✦');
+    });
+  }
+
+  function copyForIG() {
+    if (!currentLink) return;
+    const msg = `🌸 Undangan Pernikahan 🌸\n\nAhmad Rijal & Siti Aminah\nJum'at, 12 Desember 2025\n\n${currentLink}`;
+    navigator.clipboard.writeText(msg).then(() => {
+      showToast('Teks untuk Instagram disalin ✦');
+    }).catch(() => {
+      showToast('Salin link: ' + currentLink);
+    });
+  }
+
+  function addToHistory(name) {
+    const exists = history_data.findIndex(h => h.name.toLowerCase() === name.toLowerCase());
+    if (exists >= 0) {
+      history_data[exists].time = new Date().toISOString();
+    } else {
+      history_data.unshift({ name, time: new Date().toISOString() });
+      if (history_data.length > 50) history_data = history_data.slice(0, 50);
+    }
+    localStorage.setItem('wedding_guest_history', JSON.stringify(history_data));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const section = document.getElementById('history-section');
+    const list = document.getElementById('history-list');
+
+    if (!history_data.length) {
+      section.style.display = 'none';
+      return;
+    }
+
+    section.style.display = 'block';
+    list.innerHTML = '';
+
+    history_data.forEach(item => {
+      const encoded = encodeURIComponent(item.name);
+      const link = `${BASE_URL}?to=${encoded}`;
+      const waMsg = encodeURIComponent(
+        `Assalamu'alaikum wr. wb.\n\nKepada Yth. *${item.name}*\n\nUndangan Pernikahan Ahmad Rijal & Siti Aminah:\n${link}`
+      );
+
+      const el = document.createElement('div');
+      el.className = 'history-item';
+      el.innerHTML = `
+        <div class="history-name">${escapeHtml(item.name)}</div>
+        <div class="history-actions">
+          <button class="h-btn" onclick="regen('${escapeHtml(item.name).replace(/'/g, "\\'")}')" title="Generate ulang">
+            <i class="fas fa-redo"></i>
+          </button>
+          <button class="h-btn" onclick="copyHistoryLink('${escapeHtml(item.name).replace(/'/g, "\\'")}')" title="Salin link">
+            <i class="fas fa-copy"></i>
+          </button>
+          <a class="h-btn wa" href="https://wa.me/?text=${waMsg}" target="_blank" title="Kirim WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      `;
+      list.appendChild(el);
+    });
+  }
+
+  function regen(name) {
+    document.getElementById('guest-input').value = name;
+    generateLink();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyHistoryLink(name) {
+    const encoded = encodeURIComponent(name);
+    const link = `${BASE_URL}?to=${encoded}`;
+    navigator.clipboard.writeText(link).then(() => {
+      showToast('Link untuk ' + name + ' disalin ✦');
+    });
+  }
+
+  function clearHistory() {
+    if (confirm('Hapus semua riwayat tamu?')) {
+      history_data = [];
+      localStorage.removeItem('wedding_guest_history');
+      renderHistory();
+    }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function escapeHtml(text) {
+    const d = document.createElement('div');
+    d.appendChild(document.createTextNode(text));
+    return d.innerHTML;
+  }
+
+  // Init
+  renderHistory();
+</script>
+</body>
+</html>
